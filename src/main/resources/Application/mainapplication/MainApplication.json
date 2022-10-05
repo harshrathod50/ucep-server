@@ -1,0 +1,58 @@
+{
+  "name": "MainApplication",
+  "title": "Main Application",
+  "version": "1.0",
+  "handler": "MainApplicationHandler",
+  "landingPage": "PersonalInfoQuestionPage",
+  "submitPage": "MainApplicationSubmissionPage",
+  "sections": [
+    {
+      "name": "PersonalInfoSection",
+      "title": "Personal Information Section",
+      "handler": "PersonalInfoSectionHandler",
+      "questionPages": [
+        {
+          "name": "PersonalInfoQuestionPage",
+          "title": "Personal Info QuestionPage",
+          "handler": "PersonalInfoPageHandler"
+        }
+      ]
+    },
+    {
+      "name": "BankingInfoSection",
+      "title": "Banking Info Section",
+      "handler": "BankingInfoSectionHandler",
+      "questionPages": [
+        {
+          "name": "BankingInfoQuestionPage",
+          "title": "BankingInfoPageHandler",
+          "handler": "BankingInfoPageValidator"
+        }
+      ]
+    },
+    {
+      "name": "RegularBenefitSection",
+      "title": "Regular Benefit Section",
+      "handler": "RegularBenefitSectionHandler",
+      "questionPages": [
+        {
+          "name": "RegularBenefitQuestionPage",
+          "title": "Regular Benefit Questions",
+          "handler": "RegularBenefitPageHandler"
+        }
+      ]
+    },
+    {
+      "name": "MainApplicationSummarySection",
+      "title": "Main Application Summary",
+      "handler": "MainApplicationSummarySectionHandler",
+      "questionPages": [
+        {
+          "name": "MainApplicationSummaryPage",
+          "title": "Main Application Summary Page",
+          "handler": "MainApplicationSummaryPageHandler"
+        }
+      ]
+    }
+  ]
+}

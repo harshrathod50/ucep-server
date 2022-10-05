@@ -1,0 +1,15 @@
+{
+  "name": "MainApplicationSummaryPage",
+  "title": "MainApplicationSummaryPage",
+  "description": "MainApplicationSummaryPage",
+  "type": "object",
+  "required": [
+    "isSubmitApplication"
+  ],
+  "properties": {
+    "Application.isSubmitApplication": {
+      "title": "Do you want to submit application",
+      "type": "string"
+    }
+  }
+}

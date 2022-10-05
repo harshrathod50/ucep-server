@@ -1,0 +1,27 @@
+{
+  "name": "BankingInfoQuestionPage",
+  "title": "Banking Information",
+  "description": "Banking Information",
+  "type": "object",
+  "required": [
+    "BankingInfo.receiveT4e"
+  ],
+  "properties": {
+    "BankingInfo.receiveT4e": {
+      "title": "How would you like to receive your T4E",
+      "type": "string"
+    },
+    "BankingInfo.directDepositTransitNumber": {
+      "title": "Branch Transit Number",
+      "type": "string"
+    },
+    "BankingInfo.directDepositFiNumber": {
+      "title": "F.I. Number",
+      "type": "string"
+    },
+    "BankingInfo.directDepositAccountNumber": {
+      "title": "Account Number",
+      "type": "string"
+    }
+  }
+}
