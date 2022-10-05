@@ -1,4 +1,4 @@
-package com.gigatorb.cep;
+package com.casespan.ucep;
 
 import casespan.ucep.ootb.formbuilder.util.FormBuilderEngineUtil;
 import org.junit.Assert;
