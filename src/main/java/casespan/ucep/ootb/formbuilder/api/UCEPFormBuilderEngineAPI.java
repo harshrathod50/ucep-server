@@ -16,25 +16,25 @@ public class UCEPFormBuilderEngineAPI {
     private OnlineApplicationService onlineAppService;
 
 
-    @PostMapping ("/startApplication")
+    @PostMapping (value ="/startApplication", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public QuestionPageJson startApplication(ApplicationKey applicationKey) {
         return onlineAppService.startApplication(applicationKey);
     }
 
-    @GetMapping("/currentPage")
+    @GetMapping(value ="/currentPage", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public QuestionPageJson getQuestionPage(QuestionPageKey questionPageKey) {
         return onlineAppService.getCurrentPage(questionPageKey);
     }
 
-    @PutMapping("/submitForm")
+    @PutMapping(value ="/submitForm", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public QuestionPageKey submitQuestionPage(QuestionPageData questionPageData) {
         return onlineAppService.submitQuestionPageAnswer(questionPageData);
     }
 
-    @PostMapping("/submitApplication")
+    @PostMapping(value ="/submitApplication", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public QuestionPageKey submitApplication(QuestionPageData questionPageData) {
         return onlineAppService.submitApplication(questionPageData);
