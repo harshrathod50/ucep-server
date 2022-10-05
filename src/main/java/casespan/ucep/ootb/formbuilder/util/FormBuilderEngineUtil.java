@@ -108,7 +108,8 @@ public class FormBuilderEngineUtil {
         String jsonFileData = "";
         try {
             Stream<String> lines = Files.lines(jsonFilePath);
-            jsonFileData = lines.collect(Collectors.joining("\n"));
+            jsonFileData = lines.collect(Collectors.joining());
+                    //collect(Collectors.joining("\n"));
             lines.close();
         } catch (IOException e) {
             e.printStackTrace();
