@@ -19,8 +19,11 @@ import casespan.ucep.ootb.formbuilder.dto.*;
 public class FormBuilderEngineUtil {
 
     public QuestionPageJson startApplication(ApplicationKey applicationKey) {
-        mainApplicationReader();
-        QuestionPageJson questionPageJson = new QuestionPageJson();
+        String questionPagesDir = "Application/mainapplication/pages-uischema";
+        QuestionPageKey questionPageKey = new QuestionPageKey();
+        questionPageKey.setCurrentQuestionPage("PersonalInfoQuestionPage");
+        QuestionPageJson questionPageJson = readQuestionPageData(questionPageKey,
+                questionPagesDir);
         return questionPageJson;
     }
 
@@ -72,9 +75,11 @@ public class FormBuilderEngineUtil {
         }
     }
 
-    private void readQuestionPageData(QuestionPageKey questionPageKey,
+    private QuestionPageJson readQuestionPageData(QuestionPageKey questionPageKey,
                                       String questionPagesDir){
         List<Path> pathList = new ArrayList<Path>();
+        QuestionPageJson questionPageJson = new QuestionPageJson();
+
         try (Stream<Path> fileStream = Files.walk(
                 new ClassPathResource(questionPagesDir).getFile().toPath())) {
             pathList = fileStream.map(Path::normalize)
@@ -87,8 +92,28 @@ public class FormBuilderEngineUtil {
         pathList.forEach(jsonFile -> {
             if(jsonFile.getFileName().toString().contains(questionPageKey.getCurrentQuestionPage())){
                 System.out.println(jsonFile.toFile().getName());
+                if(jsonFile.toFile().getName().equals(
+                        questionPageKey.getCurrentQuestionPage()+"JSONSchema.json")){
+                    questionPageJson.setJsonSchema(readJsonFile(jsonFile));
+                }else if(jsonFile.toFile().getName().equals(
+                        questionPageKey.getCurrentQuestionPage()+"UISchema.json")){
+                    questionPageJson.setUiSchema(readJsonFile(jsonFile));
+                }
             }
         });
+        return questionPageJson;
+    }
+
+    private String readJsonFile(Path jsonFilePath){
+        String jsonFileData = "";
+        try {
+            Stream<String> lines = Files.lines(jsonFilePath);
+            jsonFileData = lines.collect(Collectors.joining("\n"));
+            lines.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonFileData;
     }
 
 }

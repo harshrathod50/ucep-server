@@ -15,7 +15,7 @@ public class UCEPFormBuilderEngineAPI {
     private OnlineApplicationService onlineAppService;
 
 
-    @PostMapping("/startApplication")
+    @PostMapping ("/startApplication")
     @ResponseStatus(HttpStatus.OK)
     public QuestionPageJson startApplication(ApplicationKey applicationKey) {
         return onlineAppService.startApplication(applicationKey);
