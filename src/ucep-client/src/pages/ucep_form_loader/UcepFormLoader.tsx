@@ -4,7 +4,9 @@ import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import * as React from "react";
 
+import AppTab from "../../components/AppTab";
 import {
   BaseInputTemplate,
   FieldErrorTemplate,
@@ -70,6 +72,11 @@ const UcefFormLoader = () => {
   const [jsonSchema, setJsonSchema] = useState({} /*globalJsonSchema*/);
   const [uiSchema, setUiSchema] = useState({} /*globalUiSchema*/);
   const [formData, setFormData] = useState();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     axios
@@ -91,6 +98,15 @@ const UcefFormLoader = () => {
   return (
     <>
       <h1 className="text-6xl flex justify-center">UCEP Form Loader</h1>
+      <AppTab
+        activeTabIndex={3}
+        tabs={[
+          { title: "Form 1" },
+          { title: "Form 2" },
+          { title: "Form 3" },
+          { title: "Form 4" },
+        ]}
+      />
       <div className="md:container md:mx-auto">
         <Form
           className="bg-white rounded-3xl p-10 neu-form"

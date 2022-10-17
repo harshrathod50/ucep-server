@@ -151,7 +151,7 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
   if (norender) {
     return null;
   }
-  let submitText = "Submit";
+  let submitText = "next";
   if (props.uiSchema?.["ui:submitButtonOptions"]?.submitText) {
     submitText = props.uiSchema?.["ui:submitButtonOptions"]?.submitText;
   }
@@ -159,9 +159,9 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
     <div className="flex flex-row py-2">
       <button
         type="button"
-        className={`px-6 py-2.5 bg-blue-600 text-white
+        className={`px-6 py-2.5 bg-violet-800 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
-                    shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+                    shadow-md hover:bg-violet-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
                     active:shadow-lg transition duration-150 ease-in-out`}
       >
@@ -169,9 +169,9 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
       </button>
       <button
         type="submit"
-        className={`ml-auto px-6 py-2.5 bg-blue-600 text-white
+        className={`ml-auto px-6 py-2.5 bg-violet-800 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
-                    shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700
+                    shadow-md hover:bg-violet-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
                     active:shadow-lg transition duration-150 ease-in-out`}
       >
