@@ -1,38 +1,5 @@
-/* Button-arrow CSS: */
-.arrow {
-    cursor: pointer;
-    display: inline-block;
-    height: 40px;
-    
-    margin-left: 15px;
-    margin-right: 15px;
-    position: relative;
-    line-height: 2.5em;
-    padding-left: 70px;
-    padding-right: 70px;
-    background: rgb(209 213 219);
-    
-  }
-  .arrow:after {
-    border-left: 20px solid rgb(209 213 219);
-  }
-  
-  .arrow:after {
-    content: "";
-    position: absolute;
-    border-bottom: 20px solid transparent;
-    border-top: 20px solid transparent;
-    height: 0px;
-    width: 0px;
-    margin-right: -20px;
-    right: 0;
-  }
-  
-  .arrow:active {
-    background: rgb(76 29 149);
-    color: white;
-  }
 
-   .arrow:active:after {
-    border-left: 20px solid  rgb(76 29 149);
+    .cp{
+      clip-path: polygon(0% 0%, 73% 0, 76% 50%, 73% 100%, 0% 100%);
   }
+  

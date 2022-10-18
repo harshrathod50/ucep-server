@@ -1,21 +1,28 @@
 import "./AppTab.css";
 
+import { makeStyles } from "@mui/material";
 import type { FC } from "react";
 const AppTab: FC<{ activeTabIndex: number; tabs: { title: string }[] }> = (
   props
 ) => {
-  const something = { color: "white" };
+  const something = { backgroundColor: "black" };
+  const useStyles = {
+    "&.active": {
+      backgroundColor: "lightgray",
+    },
+  };
+
   return (
-    <div className="flex ml-8 mb-4">
+    <div className="flex ml-32 mb-4">
       {props.tabs.map((tab, index) => (
-        <div
-          className={`arrow inline cursor-pointer leading-8 h-8 ml-8 mr-6 pl-16 pr-16 relative bg-gray-300
-          
-                     font-semibold  shadow-md -4 
-                     ${index === props.activeTabIndex ? something : ""}`}
+        <button
+          type="button"
+          className={`flex bg-violet-900 active:bg-gray-300 text-white justify-center cp px-32 py-2  text-center shadow shadow-inherit "
+                            
+                     ${index === props.activeTabIndex ? useStyles : ""}`}
         >
           {tab.title}
-        </div>
+        </button>
       ))}
     </div>
   );
