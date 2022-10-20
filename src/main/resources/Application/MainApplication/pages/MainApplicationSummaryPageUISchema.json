@@ -1,0 +1,15 @@
+{
+  "ui:submitButtonOptions": {
+    "submitText": "Submit",
+    "norender": false,
+    "props": {
+      "disabled": false,
+      "className": "btn btn-info"
+    }
+  },
+  "Application.isSubmitApplication": {
+    "ui:autofocus": true,
+    "ui:emptyValue": "",
+    "ui:autocomplete": "Do you want to submit application"
+  }
+}

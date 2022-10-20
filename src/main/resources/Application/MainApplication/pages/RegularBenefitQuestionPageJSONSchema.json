@@ -1,0 +1,32 @@
+{
+  "name": "RegularBenefitQuestionPage",
+  "description": "Please enter some information about regular benefit",
+  "title": "Regular Benefit Questions",
+  "handler": "RegularBenefitPageHandler",
+  "type": "object",
+  "required": [
+    "RegularBenefit.lookingForWork",
+    "RegularBenefit.transportation",
+    "RegularBenefit.regularBenefitWeeks"
+  ],
+  "properties": {
+    "RegularBenefit.transportation": {
+      "title": "Do you have transportation to get to work?",
+      "type": "string"
+    },
+    "RegularBenefit.regularBenefitWeeks": {
+      "title": "How many weeks of benefits do you need?",
+      "type": "string"
+    },
+    "RegularBenefit.lookingForWork": {
+      "title": "Are you looking for work?",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["English", "Japanese", "Chinese"]
+      }
+    }
+  }
+}
+
+

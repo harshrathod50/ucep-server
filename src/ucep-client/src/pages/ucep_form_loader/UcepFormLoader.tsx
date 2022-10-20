@@ -2,7 +2,7 @@ import "./UcepFormLoader.css";
 
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import * as React from "react";
 
@@ -69,6 +69,11 @@ const globalUiSchema = {
 };
 
 const UcefFormLoader = () => {
+  const [applicationName, setApplicationName] = useState(
+    {} /*globalJsonSchema*/
+  );
+  const [currentPageName, setCurrentPageName] = useState({} /*globalUiSchema*/);
+  const [scriptExecutionId, setScriptExecutionId] = useState(0);
   const [jsonSchema, setJsonSchema] = useState({} /*globalJsonSchema*/);
   const [uiSchema, setUiSchema] = useState({} /*globalUiSchema*/);
   const [formData, setFormData] = useState();
@@ -80,21 +85,66 @@ const UcefFormLoader = () => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:9088/forms/startApplication")
+      .post("http://localhost:9088/forms/startApplication", {
+        applicationName: "MainApplication",
+        scriptExecutionId: scriptExecutionId,
+      })
       .then((schema) => {
         setJsonSchema(JSON.parse(schema.data.jsonSchema));
         setUiSchema(JSON.parse(schema.data.uiSchema));
+        setApplicationName(schema.data.applicationName);
+        setCurrentPageName(schema.data.currentPageName);
+        setScriptExecutionId(schema.data.scriptExecutionId);
       });
   }, []);
 
   /** Handle submission of form data. */
   const handleSubmit = ({ formData: any }: any, event: any) => {
-    axios.post("").catch((err) => {
-      console.log("Form was not submitted.");
-      console.log(err);
-    });
+    console.log(JSON.stringify(formData));
+    axios
+      .post("http://localhost:9088/forms/nextActionHandler", {
+        formAnswers: JSON.stringify(formData),
+        applicationName: applicationName,
+        currentPageName: currentPageName,
+        scriptExecutionId: scriptExecutionId,
+      })
+      .then((schema) => {
+        setJsonSchema(JSON.parse(schema.data.jsonSchema));
+        setUiSchema(JSON.parse(schema.data.uiSchema));
+        setApplicationName(schema.data.applicationName);
+        setCurrentPageName(schema.data.currentPageName);
+        setScriptExecutionId(schema.data.scriptExecutionId);
+        setFormData(schema.data.formAnswers);
+      })
+      .catch((err) => {
+        console.log("Form was not submitted.");
+        console.log(err);
+      });
   };
 
+  /** Handle submission of form data. */
+  const handlePrevious = ({ formData: any }: any, event: any) => {
+    console.log(JSON.stringify(formData));
+    axios
+      .post("http://localhost:9088/forms/previousActionHandler", {
+        formAnswers: JSON.stringify(formData),
+        applicationName: applicationName,
+        currentPageName: currentPageName,
+        scriptExecutionId: scriptExecutionId,
+      })
+      .then((schema: AxiosResponse<any>) => {
+        setJsonSchema(JSON.parse(schema.data.jsonSchema));
+        setUiSchema(JSON.parse(schema.data.uiSchema));
+        setApplicationName(schema.data.applicationName);
+        setCurrentPageName(schema.data.currentPageName);
+        setScriptExecutionId(schema.data.scriptExecutionId);
+        setFormData(schema.data.formAnswers);
+      })
+      .catch((err) => {
+        console.log("Form was not submitted.");
+        console.log(err);
+      });
+  };
   return (
     <>
       <h1 className="text-6xl flex justify-center">UCEP Form Loader</h1>
@@ -123,6 +173,7 @@ const UcefFormLoader = () => {
             ButtonTemplates: { SubmitButton: SubmitButton },
           }}
           onSubmit={handleSubmit}
+          //onPrevious={handlePrevious}
         />
       </div>
     </>

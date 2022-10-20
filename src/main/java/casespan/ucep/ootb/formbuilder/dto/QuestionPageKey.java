@@ -5,11 +5,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class QuestionPageKey {
-    /*@Getter @Setter
-    private String applicationSchemaName;
-    @Getter @Setter
-    private long schemaExecutionId;*/
-    @Getter @Setter
+    private String applicationId;
     private String currentQuestionPage;
 }

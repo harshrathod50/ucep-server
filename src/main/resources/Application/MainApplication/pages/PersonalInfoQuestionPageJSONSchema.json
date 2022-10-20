@@ -1,0 +1,26 @@
+{
+  "name": "PersonalInfoQuestionPage",
+  "title": "Personal Information",
+  "description": "Personal Information",
+  "handler": "PersonalInfoPageHandler",
+  "type": "object",
+  "required": [
+    "Person.firstName",
+    "Person.lastName",
+    "Person.ssn"
+  ],
+  "properties": {
+    "Person.firstName": {
+      "title": "What is your First Name?",
+      "type": "string"
+    },
+    "Person.lastName": {
+      "title": "What is your Last Name?",
+      "type": "string"
+    },
+    "Person.ssn": {
+      "title": "What is your Social Insurance Number?",
+      "type": "string"
+    }
+  }
+}

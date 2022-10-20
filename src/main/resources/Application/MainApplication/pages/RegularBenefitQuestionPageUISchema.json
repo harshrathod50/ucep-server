@@ -1,0 +1,23 @@
+{
+  "ui:submitButtonOptions": {
+    "submitText": "Next",
+    "norender": false,
+    "props": {
+      "disabled": false,
+      "className": "btn btn-info"
+    }
+  },
+  "RegularBenefit.transportation": {
+    "ui:autofocus": true,
+    "ui:emptyValue": "",
+    "ui:autocomplete": "transportation"
+  },
+  "RegularBenefit.regularBenefitWeeks": {
+    "ui:emptyValue": "",
+    "ui:autocomplete": "regularBenefitWeeks"
+  },
+  "RegularBenefit.lookingForWork": {
+    "ui:emptyValue": "",
+    "ui:autocomplete": "lookingForWork"
+  }
+}

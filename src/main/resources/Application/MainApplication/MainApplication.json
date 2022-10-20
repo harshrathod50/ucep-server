@@ -1,0 +1,54 @@
+{
+  "name": "MainApplication",
+  "title": "Main Application",
+  "version": "1.0",
+  "handler": "MainApplicationHandler",
+  "landingPage": "PersonalInfoQuestionPage",
+  "submitPage": "MainApplicationSubmissionPage",
+  "sections": [
+    {
+      "name": "PersonalInfoSection",
+      "title": "Personal Information Section",
+      "handler": "PersonalInfoSectionHandler",
+      "questionPages": {
+        "PersonalInfoQuestionPage": {
+          "JSONSchema": "PersonalInfoQuestionPageJSONSchema",
+          "UISchema": "PersonalInfoQuestionPageUISchema"
+        }
+      }
+    },
+    {
+      "name": "BankingInfoSection",
+      "title": "Banking Info Section",
+      "handler": "BankingInfoSectionHandler",
+      "questionPages": {
+        "BankingInfoQuestionPage": {
+          "JSONSchema": "BankingInfoQuestionPageJSONSchema",
+          "UISchema": "BankingInfoQuestionPageUISchema"
+        }
+      }
+    },
+    {
+      "name": "RegularBenefitSection",
+      "title": "Regular Benefit Section",
+      "handler": "RegularBenefitSectionHandler",
+      "questionPages": {
+        "RegularBenefitQuestionPage": {
+          "JSONSchema": "RegularBenefitQuestionPageJSONSchema",
+          "UISchema": "RegularBenefitQuestionPageUISchema"
+        }
+      }
+    },
+    {
+      "name": "MainApplicationSummarySection",
+      "title": "Main Application Summary",
+      "handler": "MainApplicationSummarySectionHandler",
+      "questionPages": {
+        "MainApplicationSummaryPage": {
+          "JSONSchema": "MainApplicationSummaryPageJSONSchema",
+          "UISchema": "MainApplicationSummaryPageUISchema"
+        }
+      }
+    }
+  ]
+}

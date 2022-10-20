@@ -5,7 +5,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class ApplicationKey {
-    @Getter @Setter
     private String applicationName;
+    private long scriptExecutionId;
 }

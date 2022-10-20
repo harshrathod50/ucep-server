@@ -1,11 +1,16 @@
 package casespan.ucep.ootb.formbuilder.api;
 
 
+import casespan.ucep.ootb.formbuilder.collection.Application;
+import casespan.ucep.ootb.formbuilder.collection.QuestionPage;
 import casespan.ucep.ootb.formbuilder.dto.*;
-import casespan.ucep.ootb.formbuilder.service.intf.OnlineApplicationService;
+import casespan.ucep.ootb.formbuilder.service.OnlineApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/forms")
@@ -18,25 +23,33 @@ public class UCEPFormBuilderEngineAPI {
 
     @PostMapping (value ="/startApplication", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionPageJson startApplication(ApplicationKey applicationKey) {
+    public QuestionPageData startApplication(@RequestBody ApplicationKey applicationKey) {
+        applicationKey = new ApplicationKey();
+        applicationKey.setApplicationName("MainApplication");
         return onlineAppService.startApplication(applicationKey);
     }
 
-    @GetMapping(value ="/currentPage", produces = "application/json")
+    @GetMapping (value ="/list", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionPageJson getQuestionPage(QuestionPageKey questionPageKey) {
-        return onlineAppService.getCurrentPage(questionPageKey);
+    public List<Application> listApplications() {
+        return onlineAppService.listApplications();
     }
 
-    @PutMapping(value ="/submitForm", produces = "application/json")
+    @PostMapping(value ="/nextActionHandler", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionPageKey submitQuestionPage(QuestionPageData questionPageData) {
-        return onlineAppService.submitQuestionPageAnswer(questionPageData);
+    public QuestionPageData nextActionHandler(@RequestBody QuestionPageAnswers questionPageAnswers) {
+        return onlineAppService.nextActionHandler(questionPageAnswers);
     }
 
-    @PostMapping(value ="/submitApplication", produces = "application/json")
+    @PostMapping(value ="/previousActionHandler", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionPageKey submitApplication(QuestionPageData questionPageData) {
-        return onlineAppService.submitApplication(questionPageData);
+    public QuestionPageData previousActionHandler(QuestionPageKey questionPageKey) {
+        return onlineAppService.previousActionHandler(questionPageKey);
+    }
+
+    @PostMapping(value ="/submitHandler", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public void submitApplication(QuestionPageData questionPageData) {
+        onlineAppService.submitApplication(questionPageData);
     }
 }

@@ -1,5 +1,6 @@
 package com.casespan.ucep;
 
+import casespan.ucep.ootb.formbuilder.dto.ApplicationKey;
 import casespan.ucep.ootb.formbuilder.util.FormBuilderEngineUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,7 +20,9 @@ public class UcepServerApplicationTests {
 	public void testMe(){
 		FormBuilderEngineUtil formBuilderEngineUtil =
 				new FormBuilderEngineUtil();
-		formBuilderEngineUtil.mainApplicationReader();
+		ApplicationKey appKey = new ApplicationKey();
+		appKey.setApplicationName("MainApplication");
+		formBuilderEngineUtil.loadApplicationSchema(appKey);
 		Assert.assertEquals(true, true);
 	}
 }

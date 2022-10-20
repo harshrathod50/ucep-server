@@ -1,0 +1,27 @@
+{
+  "ui:submitButtonOptions": {
+    "submitText": "Next",
+    "norender": false,
+    "props": {
+      "disabled": false,
+      "className": "btn btn-info"
+    }
+  },
+  "BankingInfo.receiveT4e": {
+    "ui:autofocus": true,
+    "ui:emptyValue": "",
+    "ui:autocomplete": "receiveT4e"
+  },
+  "BankingInfo.directDepositTransitNumber": {
+    "ui:emptyValue": "",
+    "ui:autocomplete": "directDepositTransitNumber"
+  },
+  "BankingInfo.directDepositFiNumber": {
+    "ui:emptyValue": "",
+    "ui:autocomplete": "directDepositFiNumber"
+  },
+  "BankingInfo.directDepositAccountNumber": {
+    "ui:emptyValue": "",
+    "ui:autocomplete": "directDepositAccountNumber"
+  }
+}
