@@ -6,7 +6,6 @@ import casespan.ucep.ootb.formbuilder.dto.QuestionPageAnswers;
 import casespan.ucep.ootb.formbuilder.dto.QuestionPageData;
 import casespan.ucep.ootb.formbuilder.dto.QuestionPageKey;
 import casespan.ucep.ootb.formbuilder.repository.ApplicationScriptRepo;
-import casespan.ucep.ootb.formbuilder.util.FormBuilderEngineUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -23,8 +22,6 @@ import java.util.Optional;
 @Service
 public class OnlineApplicationServiceImpl implements OnlineApplicationService{
     @Autowired
-    private FormBuilderEngineUtil formBuilderEngineUtil;
-    @Autowired
     private ApplicationScriptRepo applicationScriptRepo;
     @Autowired
     private ScriptExecutionService scriptExecutionService;
@@ -38,32 +35,31 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
                 applicationScriptRepo.findById(applicationKey.getApplicationName());
         if(applicationScriptOpt.isPresent()){
             applicationScript = applicationScriptOpt.get();
-        }else{
-            applicationScript = formBuilderEngineUtil
-                    .startApplication(applicationKey);
         }
-        // Script Execution
-        if(applicationKey.getScriptExecutionId() == 0) {
-            ScriptExecution scriptExecution = new ScriptExecution();
-            scriptExecution.setName(applicationKey.getApplicationName());
-            scriptExecution =
-                    scriptExecutionService.saveScriptExecution(scriptExecution);
-            questionPageData.setScriptExecutionId(
-                    scriptExecution.getScriptExecutionId());
-            // Script Execution Data
-            ScriptExecutionData scriptExecutionData = new ScriptExecutionData();
-            LinkedTreeMap<String, LinkedTreeMap<String, String>> topLevelMap = new LinkedTreeMap<>();
-            scriptExecutionData.setScriptExecutionId(scriptExecution.getScriptExecutionId());
-            scriptExecutionData.setQuestionAnswer(topLevelMap);
-            scriptExecutionDataService.saveScriptExecutionData(scriptExecutionData);
+        if(applicationScript != null) {
+            // Script Execution
+            if (applicationKey.getScriptExecutionId() == 0) {
+                ScriptExecution scriptExecution = new ScriptExecution();
+                scriptExecution.setName(applicationKey.getApplicationName());
+                scriptExecution =
+                        scriptExecutionService.saveScriptExecution(scriptExecution);
+                questionPageData.setScriptExecutionId(
+                        scriptExecution.getScriptExecutionId());
+                // Script Execution Data
+                ScriptExecutionData scriptExecutionData = new ScriptExecutionData();
+                LinkedTreeMap<String, LinkedTreeMap<String, String>> topLevelMap = new LinkedTreeMap<>();
+                scriptExecutionData.setScriptExecutionId(scriptExecution.getScriptExecutionId());
+                scriptExecutionData.setQuestionAnswer(topLevelMap);
+                scriptExecutionDataService.saveScriptExecutionData(scriptExecutionData);
+            }
+            // Populate Start Question Page
+            ArrayList<String> questionList =
+                    allQuestionPages(applicationScript);
+            questionPageData.setApplicationName(applicationKey.getApplicationName());
+            questionPageData.setCurrentPageName(questionList.get(0));
+            populateQuestionPageData(applicationScript, questionPageData);
         }
-        // Populate Start Question Page
-        ArrayList<String> questionList =
-                allQuestionPages(applicationScript);
-        questionPageData.setApplicationName(applicationKey.getApplicationName());
-        questionPageData.setCurrentPageName(questionList.get(0));
-        populateQuestionPageData(applicationScript, questionPageData);
-         return questionPageData;
+        return questionPageData;
     }
 
     @Override
@@ -73,7 +69,24 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
 
     @Override
     public QuestionPageData previousActionHandler(QuestionPageKey questionPageKey) {
-        return null;
+        QuestionPageData questionPageData = new QuestionPageData();
+        // Get Next Page
+        Optional<ApplicationScript> applicationScriptOpt =
+                applicationScriptRepo.findById(questionPageKey.getApplicationName());
+        if(applicationScriptOpt.isPresent()){
+            ApplicationScript applicationScript = applicationScriptOpt.get();
+            questionPageData.setCurrentPageName(
+                    questionPageKey.getCurrentQuestionPage());
+            questionPageData.setApplicationName(
+                    applicationScript.getName());
+            String previousQuestionPage = getPreviousQuestionPage(applicationScript,
+                    questionPageData.getCurrentPageName());
+            questionPageData.setCurrentPageName(previousQuestionPage);
+            populateQuestionPageData(applicationScript, questionPageData);
+        }
+        questionPageData.setScriptExecutionId(
+                questionPageKey.getScriptExecutionId());
+        return questionPageData;
     }
 
     @Override
@@ -159,6 +172,22 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
         return nextQuestionPage;
     }
 
+    private String getPreviousQuestionPage(ApplicationScript applicationScript,
+                                       String currentPage){
+        String previousQuestionPage = "";
+        ArrayList<String> questionList = allQuestionPages(applicationScript);
+        int currentPageIndex = -1;
+        for(int i=0; i <= questionList.size()-1; i++){
+            if(questionList.get(i).equals(currentPage)){
+                currentPageIndex = i;
+                break;
+            }
+        }
+        if(currentPageIndex != -1){
+            previousQuestionPage = questionList.get(currentPageIndex-1);
+        }
+        return previousQuestionPage;
+    }
     private void populateQuestionPageData(ApplicationScript applicationScript, QuestionPageData questionPageData) {
         if(questionPageData.getCurrentPageName().length() > 0) {
             String jsonSchema = "";

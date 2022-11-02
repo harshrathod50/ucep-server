@@ -69,23 +69,12 @@ public class QuestionPageJsonDeserializer implements JsonDeserializer<QuestionPa
                     if("type".equals(questionEntry.getKey())){
                         question.setType(questionEntry.getValue().getAsString());
                     }
-                    if("array".equals(questionEntry.getKey())){
-                        LinkedTreeMap<String, QuestionItems> itemsTreeMap =
-                                new LinkedTreeMap<>();
-                        QuestionItems questionItems = new QuestionItems();
-                        for(Map.Entry<String, JsonElement> itemsEntry:questionEntry.getValue().getAsJsonObject()
-                                .get("items").getAsJsonObject().entrySet()){
-                            if("type".equals(itemsEntry.getKey())){
-                                questionItems.setType(itemsEntry.getValue().getAsString());
-                            }
-                            if("enum".equals(itemsEntry.getKey())){
-                                String[] enumArr = itemsEntry.getValue().getAsString().split(
-                                        ",");
-                                questionItems.setEnumList(Arrays.asList(enumArr));
-                            }
+                    if("enum".equals(questionEntry.getKey())){
+                        List<String> valuesList = new ArrayList<>();
+                        for(JsonElement jElm:questionEntry.getValue().getAsJsonArray()){
+                            valuesList.add(jElm.getAsString());
                         }
-                        itemsTreeMap.put("items", questionItems);
-                        question.setItems(itemsTreeMap);
+                        question.setEnumList(valuesList);
                     }
                 }
                 questionLinkedTreeMap.put(propertiesEntry.getKey(),

@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @Builder
 public class QuestionPageKey {
-    private String applicationId;
+    private String applicationName;
     private String currentQuestionPage;
+    private long scriptExecutionId;
 }

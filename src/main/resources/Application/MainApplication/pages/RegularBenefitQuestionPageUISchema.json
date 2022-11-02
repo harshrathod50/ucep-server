@@ -17,7 +17,6 @@
     "ui:autocomplete": "regularBenefitWeeks"
   },
   "RegularBenefit.lookingForWork": {
-    "ui:emptyValue": "",
-    "ui:autocomplete": "lookingForWork"
+    "ui:widget": "select"
   }
 }

@@ -21,5 +21,5 @@ public class QuestionPageData {
     private String jsonSchema;
     private String uiSchema;
     private long scriptExecutionId;
-
+    private boolean isSubmitPage;
 }

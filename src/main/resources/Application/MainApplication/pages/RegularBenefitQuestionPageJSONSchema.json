@@ -20,11 +20,8 @@
     },
     "RegularBenefit.lookingForWork": {
       "title": "Are you looking for work?",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": ["English", "Japanese", "Chinese"]
-      }
+      "type": "string",
+      "enum": ["Yes", "No", "Maybe"]
     }
   }
 }

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,6 +18,8 @@ public class Question {
     public String title;
     @Field("type")
     public String type;
-    @Field("items")
-    public LinkedTreeMap<String, QuestionItems> items;
+    @Field("enum")
+    public List<String> enumList;
+    @Field("answer")
+    public String answer;
 }
