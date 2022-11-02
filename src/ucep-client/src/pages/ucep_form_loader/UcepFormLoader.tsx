@@ -5,6 +5,7 @@ import validator from "@rjsf/validator-ajv8";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
 import AppTab from "../../components/AppTab";
 import {
@@ -69,6 +70,7 @@ const globalUiSchema = {
 };
 
 const UcefFormLoader = () => {
+  const navigate = useNavigate();
   const [applicationName, setApplicationName] = useState(
     {} /*globalJsonSchema*/
   );
@@ -100,31 +102,61 @@ const UcefFormLoader = () => {
 
   /** Handle submission of form data. */
   const handleSubmit = ({ formData: any }: any, event: any) => {
-    console.log(JSON.stringify(formData));
-    axios
-      .post("http://localhost:9088/forms/nextActionHandler", {
-        formAnswers: JSON.stringify(formData),
-        applicationName: applicationName,
-        currentPageName: currentPageName,
-        scriptExecutionId: scriptExecutionId,
-      })
-      .then((schema) => {
-        setJsonSchema(JSON.parse(schema.data.jsonSchema));
-        setUiSchema(JSON.parse(schema.data.uiSchema));
-        setApplicationName(schema.data.applicationName);
-        setCurrentPageName(schema.data.currentPageName);
-        setScriptExecutionId(schema.data.scriptExecutionId);
-        setFormData(schema.data.formAnswers);
-      })
-      .catch((err) => {
-        console.log("Form was not submitted.");
-        console.log(err);
-      });
+    event.target.back.addEventListener("click", () => {
+      console.log("back was executed.");
+      console.log(JSON.stringify(formData));
+      axios
+        .post("http://localhost:9088/forms/nextActionHandler", {
+          formAnswers: JSON.stringify(formData),
+          applicationName: applicationName,
+          currentPageName: currentPageName,
+          scriptExecutionId: scriptExecutionId,
+        })
+        .then((schema) => {
+          setJsonSchema(JSON.parse(schema.data.jsonSchema));
+          setUiSchema(JSON.parse(schema.data.uiSchema));
+          setApplicationName(schema.data.applicationName);
+          setCurrentPageName(schema.data.currentPageName);
+          setScriptExecutionId(schema.data.scriptExecutionId);
+          setFormData(schema.data.formAnswers);
+        })
+        .catch((err) => {
+          console.log("Form was not submitted.");
+          console.log(err);
+        });
+    });
+    event.target.next.addEventListener("click", () => {
+      console.log("next was executed.");
+      axios
+        .post("http://localhost:9088/forms/previousActionHandler", {
+          formAnswers: JSON.stringify(formData),
+          applicationName: applicationName,
+          currentPageName: currentPageName,
+          scriptExecutionId: scriptExecutionId,
+        })
+        .then((schema: AxiosResponse<any>) => {
+          setJsonSchema(JSON.parse(schema.data.jsonSchema));
+          setUiSchema(JSON.parse(schema.data.uiSchema));
+          setApplicationName(schema.data.applicationName);
+          setCurrentPageName(schema.data.currentPageName);
+          setScriptExecutionId(schema.data.scriptExecutionId);
+          setFormData(schema.data.formAnswers);
+          // Redirection logic (final submission)
+          //
+          if (schema.data.isSubmitPage === true) {
+            navigate("/success");
+          }
+          //
+        })
+        .catch((err) => {
+          console.log("Back button is clicked!");
+          console.log(err);
+        });
+    });
   };
 
   /** Handle submission of form data. */
   const handlePrevious = ({ formData: any }: any, event: any) => {
-    console.log(JSON.stringify(formData));
     axios
       .post("http://localhost:9088/forms/previousActionHandler", {
         formAnswers: JSON.stringify(formData),
@@ -141,10 +173,11 @@ const UcefFormLoader = () => {
         setFormData(schema.data.formAnswers);
       })
       .catch((err) => {
-        console.log("Form was not submitted.");
+        console.log("Back button is clicked!");
         console.log(err);
       });
   };
+
   return (
     <>
       <h1 className="text-6xl flex justify-center">UCEP Form Loader</h1>

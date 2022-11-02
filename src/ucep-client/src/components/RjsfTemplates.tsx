@@ -147,28 +147,31 @@ export const BaseInputTemplate: FC<WidgetProps> = (props) => {
 };
 
 export const SubmitButton: FC<SubmitButtonProps> = (props) => {
-  const { norender } = getSubmitButtonOptions(props.uiSchema);
+  const {
+    submitText,
+    norender,
+    props: submitButtonProps = {},
+  } = getSubmitButtonOptions(props.uiSchema);
   if (norender) {
     return null;
-  }
-  let submitText = "next";
-  if (props.uiSchema?.["ui:submitButtonOptions"]?.submitText) {
-    submitText = props.uiSchema?.["ui:submitButtonOptions"]?.submitText;
   }
   return (
     <div className="flex flex-row py-2">
       <button
-        type="button"
+        name="back"
+        type="submit"
         className={`px-6 py-2.5 bg-violet-800 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
                     shadow-md hover:bg-violet-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
                     active:shadow-lg transition duration-150 ease-in-out`}
       >
-        Previous
+        Back
       </button>
       <button
+        name="next"
         type="submit"
+        {...submitButtonProps}
         className={`ml-auto px-6 py-2.5 bg-violet-800 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
                     shadow-md hover:bg-violet-900 hover:shadow-lg focus:bg-blue-700
