@@ -106,7 +106,7 @@ const UcefFormLoader = () => {
       console.log("back was executed.");
       console.log(JSON.stringify(formData));
       axios
-        .post("http://localhost:9088/forms/nextActionHandler", {
+        .post("http://localhost:9088/forms/previousActionHandler", {
           formAnswers: JSON.stringify(formData),
           applicationName: applicationName,
           currentPageName: currentPageName,
@@ -128,7 +128,7 @@ const UcefFormLoader = () => {
     event.target.next.addEventListener("click", () => {
       console.log("next was executed.");
       axios
-        .post("http://localhost:9088/forms/previousActionHandler", {
+        .post("http://localhost:9088/forms/nextActionHandler", {
           formAnswers: JSON.stringify(formData),
           applicationName: applicationName,
           currentPageName: currentPageName,
@@ -149,7 +149,7 @@ const UcefFormLoader = () => {
           //
         })
         .catch((err) => {
-          console.log("Back button is clicked!");
+          console.log("Next button is clicked!");
           console.log(err);
         });
     });
