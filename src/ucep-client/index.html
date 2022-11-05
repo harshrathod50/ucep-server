@@ -5,6 +5,24 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UCEP</title>
+    <!-- TailwindCSS: Manually toggle theme modes: light/dark.
+    https://tailwindcss.com/docs/dark-mode -->
+    <script type="text/javascript" defer>
+      const darkThemeMedia = window.matchMedia("(prefers-color-scheme: dark)");
+      const htmlTagClassList = document.documentElement.classList;
+      // After page load, set theme mode
+      // according to system preference.
+      window.addEventListener("load", (event) => {
+        if (darkThemeMedia.matches) htmlTagClassList.add("dark");
+        else htmlTagClassList.remove("dark");
+      });
+      // On live change
+      darkThemeMedia.addEventListener("change", (event) => {
+        if (event.matches) htmlTagClassList.add("dark");
+        else htmlTagClassList.remove("dark");
+      });
+    </script>
+    <!-- TailwindCSS: End. -->
   </head>
   <body>
     <div id="root"></div>
