@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 400;
   color-scheme: light dark;
@@ -15,9 +15,9 @@
 }
 
 h1, h2, h3, h4, h5, h6, th, thead {
-  font-family: serif;
+  font-family: "Roboto Serif", serif;
 }
 
 code {
-  font-family: Consolas;
+  font-family: "Roboto Mono", Consolas;
 }
