@@ -3,8 +3,18 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto-serif/400.css";
 import "@fontsource/roboto-mono/400.css";
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import Root from "./pages/root/Root";
+
 const App = () => {
-  return <h1 className="text-3xl font-bold">Hello, World!</h1>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/*" element={<Root />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;
