@@ -8,6 +8,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 import AppTab from "../../components/AppTab";
+import SelectWidget from "../../components/rjsf/widgets/SelectWidget";
 import {
   BaseInputTemplate,
   FieldErrorTemplate,
@@ -205,6 +206,7 @@ const UcefFormLoader = () => {
             BaseInputTemplate: BaseInputTemplate,
             ButtonTemplates: { SubmitButton: SubmitButton },
           }}
+          widgets={{ SelectWidget: SelectWidget }}
           onSubmit={handleSubmit}
           //onPrevious={handlePrevious}
         />
