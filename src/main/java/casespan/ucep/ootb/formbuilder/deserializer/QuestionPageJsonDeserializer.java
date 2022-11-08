@@ -1,5 +1,6 @@
 package casespan.ucep.ootb.formbuilder.deserializer;
 
+import casespan.ucep.ootb.formbuilder.collection.OneOf;
 import casespan.ucep.ootb.formbuilder.collection.Question;
 import casespan.ucep.ootb.formbuilder.collection.QuestionItems;
 import casespan.ucep.ootb.formbuilder.collection.QuestionPageJSONSchema;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class QuestionPageJsonDeserializer implements JsonDeserializer<QuestionPageJSONSchema > {
     @Override
@@ -75,6 +77,22 @@ public class QuestionPageJsonDeserializer implements JsonDeserializer<QuestionPa
                             valuesList.add(jElm.getAsString());
                         }
                         question.setEnumList(valuesList);
+                    }
+                    if ("oneOf".equals(questionEntry.getKey())) {
+                        List<OneOf> selectOptions = new ArrayList<>();
+                        for (JsonElement jElm: questionEntry.getValue().getAsJsonArray()) {
+                            OneOf oneOf = new OneOf();
+                            for (Entry<String, JsonElement> oneOfEntry: jElm.getAsJsonObject().entrySet()) {
+                                if ("const".equals(oneOfEntry.getKey())) {
+                                    oneOf.setConstant(oneOfEntry.getValue().getAsString());
+                                }
+                                if ("title".equals(oneOfEntry.getKey())) {
+                                    oneOf.setTitle(oneOfEntry.getValue().getAsString());
+                                }
+                            }
+                            selectOptions.add(oneOf);
+                        }
+                        question.setOneOf(selectOptions);
                     }
                 }
                 questionLinkedTreeMap.put(propertiesEntry.getKey(),

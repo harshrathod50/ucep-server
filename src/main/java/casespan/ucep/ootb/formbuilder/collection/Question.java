@@ -1,5 +1,6 @@
 package casespan.ucep.ootb.formbuilder.collection;
 
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,10 @@ public class Question {
     @Field("type")
     public String type;
     @Field("enum")
+    @SerializedName("enum")
     public List<String> enumList;
+    @Field("oneOf")
+    public List<OneOf> oneOf;
     @Field("answer")
     public String answer;
 }
