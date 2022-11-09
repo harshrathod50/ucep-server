@@ -4,12 +4,13 @@ server:
 spring:
   data:
     mongodb:
-      authentication-database: admin
-      username: admin
-      password: Ped@l123
-      database: ucep
-      port: 27017
-      host: localhost
+      uri: mongodb+srv://admin:gigatorb@ucep.t7lh77n.mongodb.net/ucep
+#       authentication-database: admin
+#       username: admin
+#       password: Ped@l123
+#       database: ucep
+#       port: 27017
+#       host: localhost
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
