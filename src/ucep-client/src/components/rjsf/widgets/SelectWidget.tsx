@@ -26,10 +26,8 @@ function getValue(
  * @param props - The `WidgetProps` for this component
  */
 function SelectWidget<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T = any,
   S extends StrictRJSFSchema = RJSFSchema,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   F extends FormContextType = any
 >({
   schema,

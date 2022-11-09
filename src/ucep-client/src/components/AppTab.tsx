@@ -1,6 +1,5 @@
 import "./AppTab.css";
 
-import { makeStyles } from "@mui/material";
 import type { FC } from "react";
 const AppTab: FC<{ activeTabIndex: number; tabs: { title: string }[] }> = (
   props
@@ -11,7 +10,6 @@ const AppTab: FC<{ activeTabIndex: number; tabs: { title: string }[] }> = (
       backgroundColor: "lightgray",
     },
   };
-
   return (
     <div className="flex ml-32 mb-4">
       {props.tabs.map((tab, index) => (
