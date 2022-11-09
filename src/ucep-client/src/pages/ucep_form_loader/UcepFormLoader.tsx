@@ -1,5 +1,10 @@
 import "./UcepFormLoader.css";
 
+import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
+import AnchorOutlinedIcon from "@mui/icons-material/AnchorOutlined";
+import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import DirectionsBoatFilledOutlinedIcon from "@mui/icons-material/DirectionsBoatFilledOutlined";
+import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import axios, { AxiosResponse } from "axios";
@@ -7,7 +12,7 @@ import { useEffect, useState } from "react";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
-import AppTab from "../../components/AppTab";
+import Layout from "../../components/layout/Layout";
 import SelectWidget from "../../components/rjsf/widgets/SelectWidget";
 import {
   BaseInputTemplate,
@@ -16,6 +21,7 @@ import {
   ObjectFieldTemplate,
   SubmitButton,
 } from "../../components/RjsfTemplates";
+import SectionsPanel from "../../components/sections/SectionsPanel";
 
 const globalJsonSchema = {
   name: "PersonalInfoQuestionPage",
@@ -180,18 +186,20 @@ const UcefFormLoader = () => {
   };
 
   return (
-    <>
-      <h1 className="text-6xl flex justify-center">UCEP Form Loader</h1>
-      <AppTab
-        activeTabIndex={3}
-        tabs={[
-          { title: "Form 1" },
-          { title: "Form 2" },
-          { title: "Form 3" },
-          { title: "Form 4" },
-        ]}
-      />
-      <div className="md:container md:mx-auto">
+    <Layout>
+      <div className="container mx-auto flex flex-col gap-4">
+        <SectionsPanel
+          list={[
+            { label: "Destination", icon: AddLocationAltOutlinedIcon },
+            {
+              label: "Port Dues",
+              icon: DirectionsBoatFilledOutlinedIcon,
+            },
+            { label: "Towage Dues", icon: AnchorOutlinedIcon },
+            { label: "Summary", icon: SummarizeOutlinedIcon },
+            { label: "Total Cost", icon: AttachMoneyOutlinedIcon },
+          ]}
+        />
         <Form
           className="bg-white rounded-3xl p-10 neu-form"
           schema={jsonSchema as any}
@@ -211,7 +219,7 @@ const UcefFormLoader = () => {
           //onPrevious={handlePrevious}
         />
       </div>
-    </>
+    </Layout>
   );
 };
 

@@ -160,9 +160,9 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
       <button
         name="back"
         type="submit"
-        className={`px-6 py-2.5 bg-violet-800 text-white
+        className={`px-6 py-2.5 bg-blue-600 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
-                    shadow-md hover:bg-violet-900 hover:shadow-lg focus:bg-blue-700
+                    shadow-md hover:bg-blue-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
                     active:shadow-lg transition duration-150 ease-in-out`}
       >
@@ -172,9 +172,9 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
         name="next"
         type="submit"
         {...submitButtonProps}
-        className={`ml-auto px-6 py-2.5 bg-violet-800 text-white
+        className={`ml-auto px-6 py-2.5 bg-blue-600 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
-                    shadow-md hover:bg-violet-900 hover:shadow-lg focus:bg-blue-700
+                    shadow-md hover:bg-blue-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
                     active:shadow-lg transition duration-150 ease-in-out`}
       >
