@@ -9,7 +9,7 @@ const SectionsPanel: FC<{
   }[];
 }> = (props) => {
   return (
-    <div className="bg-white rounded-3xl px-10 py-5 overflow-auto hide-scrollbar flex flex-row neu-box">
+    <div className="bg-white rounded-3xl  px-2 py-5 mt-8 overflow-auto hide-scrollbar flex flex-row neu-box">
       {props?.list?.map((section, index, list) => {
         if (index === 0) {
           return (

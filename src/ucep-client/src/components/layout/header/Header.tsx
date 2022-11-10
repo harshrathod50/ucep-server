@@ -1,18 +1,20 @@
 import PhoneIcon from "@mui/icons-material/Phone";
+import { grey } from "@mui/material/colors";
 import type { FC, PropsWithChildren } from "react";
 
 const Header: FC<PropsWithChildren> = (props) => {
   return (
     <header>
-      <hr className="border-4 border-blue-600" />
-      <div className="flex container mx-auto my-5">
-        <h1 className="text-4xl text-blue-600 uppercase">
-          Vessel Dues Calculator
-        </h1>
-        <nav className="ml-auto flex flex-row">
-          <PhoneIcon fontSize="large" color="info" />
-          <span>+91-3434-34343</span>
-        </nav>
+      <div className="bg-blue-600 ">
+        <div className="flex container mx-auto py-3">
+          <h4 className="text-2xl text-white font-sans uppercase">
+            Vessel Dues Calculator
+          </h4>
+          <nav className="ml-auto flex flex-row">
+            <PhoneIcon fontSize="large" sx={{ color: grey[100] }} />
+            <span className="text-white">+91-3434-34343</span>
+          </nav>
+        </div>
       </div>
     </header>
   );

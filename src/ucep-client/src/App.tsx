@@ -2,6 +2,7 @@ import "./App.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto-serif/400.css";
 import "@fontsource/roboto-mono/400.css";
+import "@fontsource/poppins/500.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
