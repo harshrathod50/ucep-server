@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://admin:gigatorb@ucep.t7lh77n.mongodb.net/ucep
+       uri: mongodb+srv://admin:gigatorb@ucep.t7lh77n.mongodb.net/ucep
 #       authentication-database: admin
 #       username: admin
 #       password: Ped@l123
