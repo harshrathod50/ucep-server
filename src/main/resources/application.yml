@@ -4,7 +4,8 @@ server:
 spring:
   data:
     mongodb:
-       uri: mongodb+srv://admin:gigatorb@ucep.t7lh77n.mongodb.net/ucep
+        uri: mongodb://ucep-server:I4iwsXPiDx5uf6EloIn0boF4m2Z0lvt5F9QcrwcdNZjCqCOITbRyQ4H70A177cGCb606vc53yVCPACDbTdKjcQ==@ucep-server.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@ucep-server@
+        database: ucep
 #       authentication-database: admin
 #       username: admin
 #       password: Ped@l123
