@@ -3,7 +3,7 @@ const Footer = () => {
     <div>
       {" "}
       <footer className="absolute bottom-0 w-full">
-        <div className="bg-blue-600 ">
+        <div className="bg-gradient-to-b from-appColor-600 to-gradientColor-600">
           <div className="flex container mx-auto py-2">
             <h6 className="text-white">
               © 2022 Gigatorb | a Gigatorb Group Ltd. company. All Rights

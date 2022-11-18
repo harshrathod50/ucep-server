@@ -15,7 +15,7 @@ const SectionsPanel: FC<{
           return (
             <div
               key={Math.random()}
-              className={`basis-1/5 flex flex-row gap-2 bg-blue-600
+              className={`basis-1/5 flex flex-row gap-2 bg-gradient-to-b from-appColor-600  to-gradientColor-600
               text-white justify-center px-4 py-2 text-center
               shadow shadow-inherit arrow-left`}
             >

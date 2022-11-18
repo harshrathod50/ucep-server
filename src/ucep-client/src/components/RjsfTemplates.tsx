@@ -128,9 +128,9 @@ export const BaseInputTemplate: FC<WidgetProps> = (props) => {
   return (
     <input
       className={`px-3 py-1.5 text-base font-normal
-                text-gray-700 bg-white bg-clip-padding border border-solid
+                text-gray-800 bg-white bg-clip-padding border border-solid
                 border-gray-300 rounded transition ease-in-out focus:text-gray-700
-                focus:bg-white focus:border-blue-600 focus:outline-none
+                focus:bg-white focus:border-appColor-500 focus:outline-none
                 ${hasError ? "border-red-600" : ""}`}
       id={id}
       value={value}
@@ -160,7 +160,7 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
       <button
         name="back"
         type="submit"
-        className={`px-6 py-2.5 bg-blue-600 text-white
+        className={`px-6 py-2.5 bg-gradient-to-b from-appColor-600  to-gradientColor-600 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
                     shadow-md hover:bg-blue-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
@@ -172,7 +172,7 @@ export const SubmitButton: FC<SubmitButtonProps> = (props) => {
         name="next"
         type="submit"
         {...submitButtonProps}
-        className={`ml-auto px-6 py-2.5 bg-blue-600 text-white
+        className={`ml-auto px-6 py-2.5 bg-gradient-to-b from-appColor-600  to-gradientColor-600 text-white
                     font-medium text-xs leading-tight uppercase rounded-3xl
                     shadow-md hover:bg-blue-900 hover:shadow-lg focus:bg-blue-700
                     focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
