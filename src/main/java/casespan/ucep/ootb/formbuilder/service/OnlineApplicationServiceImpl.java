@@ -1,10 +1,7 @@
 package casespan.ucep.ootb.formbuilder.service;
 
 import casespan.ucep.ootb.formbuilder.collection.*;
-import casespan.ucep.ootb.formbuilder.dto.ApplicationKey;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageAnswers;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageData;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageKey;
+import casespan.ucep.ootb.formbuilder.dto.*;
 import casespan.ucep.ootb.formbuilder.repository.ApplicationScriptRepo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,10 +11,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OnlineApplicationServiceImpl implements OnlineApplicationService{
@@ -53,13 +47,29 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
                 scriptExecutionDataService.saveScriptExecutionData(scriptExecutionData);
             }
             // Populate Start Question Page
-            ArrayList<String> questionList =
+            LinkedHashMap<String, Integer> questionNameMap =
                     allQuestionPages(applicationScript);
+            questionPageData.setCurrentPageName(questionNameMap.entrySet().stream()
+                    .findFirst().get().getKey());
             questionPageData.setApplicationName(applicationKey.getApplicationName());
-            questionPageData.setCurrentPageName(questionList.get(0));
             populateQuestionPageData(applicationScript, questionPageData);
+
+            // All Section names
+            questionPageData.setSectionNames(allSectionNames(applicationScript));
+
+            // Set Current Section name
+            questionPageData.setCurrentSection(getSectionFromQuestionPage(applicationScript,
+                    questionPageData.getCurrentPageName()));
+
+            // Previous Button Indicator
+            questionPageData.setPreviousButtonEnabled(false);
         }
         return questionPageData;
+    }
+
+    @Override
+    public QuestionPageData sectionHandler(SectionPageKey sectionPageKey) {
+        return null;
     }
 
     @Override
@@ -79,10 +89,37 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
                     questionPageKey.getCurrentQuestionPage());
             questionPageData.setApplicationName(
                     applicationScript.getName());
-            String previousQuestionPage = getPreviousQuestionPage(applicationScript,
-                    questionPageData.getCurrentPageName());
+
+            String previousQuestionPage = "";
+            // Populate Start Question Page
+            LinkedHashMap<String, Integer> questionNameMap =
+                    allQuestionPages(applicationScript);
+            int previousIndex = 0;
+            if (questionNameMap.containsKey(questionPageData.getCurrentPageName())) {
+                int index = questionNameMap.get(
+                        questionPageData.getCurrentPageName());
+                previousIndex = index-1;
+                if(previousIndex >= 0 && questionNameMap.size()-1 >= previousIndex) {
+                    String key = getLinkedHashMapKeyAt(questionNameMap, previousIndex);
+                    previousQuestionPage = key;
+                }
+            }
             questionPageData.setCurrentPageName(previousQuestionPage);
             populateQuestionPageData(applicationScript, questionPageData);
+
+            // All Section names
+            questionPageData.setSectionNames(allSectionNames(applicationScript));
+
+            // Previous Button Condition
+            if (previousIndex > 0) {
+                questionPageData.setPreviousButtonEnabled(true);
+            } else {
+                questionPageData.setPreviousButtonEnabled(false);
+            }
+
+            // Set Current Section name
+            questionPageData.setCurrentSection(getSectionFromQuestionPage(applicationScript,
+                    questionPageData.getCurrentPageName()));
         }
         questionPageData.setScriptExecutionId(
                 questionPageKey.getScriptExecutionId());
@@ -104,10 +141,37 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
                     questionPageAnswers.getCurrentPageName());
             questionPageData.setApplicationName(
                     applicationScript.getName());
-            String nextQuestionPage = getNextQuestionPage(applicationScript,
-                    questionPageData.getCurrentPageName());
+
+            String nextQuestionPage = "";
+            // Populate Start Question Page
+            LinkedHashMap<String, Integer> questionNameMap =
+                    allQuestionPages(applicationScript);
+            int nextIndex = 0;
+            if (questionNameMap.containsKey(questionPageData.getCurrentPageName())) {
+                int index = questionNameMap.get(
+                        questionPageData.getCurrentPageName());
+                nextIndex = index + 1;
+                if(nextIndex >= 0 && questionNameMap.size()-1 >= nextIndex) {
+                    String key = getLinkedHashMapKeyAt(questionNameMap, nextIndex);
+                    nextQuestionPage = key;
+                }
+            }
             questionPageData.setCurrentPageName(nextQuestionPage);
             populateQuestionPageData(applicationScript, questionPageData);
+
+            // All Section names
+            questionPageData.setSectionNames(allSectionNames(applicationScript));
+
+            // Previous Button Condition
+            if (nextIndex > 0) {
+                questionPageData.setPreviousButtonEnabled(true);
+            } else {
+                questionPageData.setPreviousButtonEnabled(false);
+            }
+
+            // Set Current Section name
+            questionPageData.setCurrentSection(getSectionFromQuestionPage(applicationScript,
+                    questionPageData.getCurrentPageName()));
         }
         questionPageData.setScriptExecutionId(
                 questionPageAnswers.getScriptExecutionId());
@@ -144,50 +208,20 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
                 scriptExecutionData);
     }
 
-    private ArrayList<String> allQuestionPages(ApplicationScript applicationScript) {
-        ArrayList<String> questionList = new ArrayList<>();
+    private LinkedHashMap<String, Integer> allQuestionPages(ApplicationScript applicationScript) {
+        LinkedHashMap<String, Integer> questionNameMap = new LinkedHashMap<>();
+        int index = 0;
         for (Section section : applicationScript.getSections()) {
             LinkedTreeMap<String, QuestionPage> questionPagesMap =
                     section.getQuestionPages();
             for (Map.Entry<String, QuestionPage> entry : questionPagesMap.entrySet()) {
-                questionList.add(entry.getKey());
+                questionNameMap.put(entry.getKey(), index);
+                index = index + 1;
             }
         }
-        return questionList;
-    }
-    private String getNextQuestionPage(ApplicationScript applicationScript,
-                                     String currentPage){
-        String nextQuestionPage = "";
-        ArrayList<String> questionList = allQuestionPages(applicationScript);
-        int currentPageIndex = -1;
-        for(int i=0; i <= questionList.size()-1; i++){
-            if(questionList.get(i).equals(currentPage)){
-                currentPageIndex = i;
-                break;
-            }
-        }
-        if(currentPageIndex != -1 && currentPageIndex <= questionList.size()-2){
-            nextQuestionPage = questionList.get(currentPageIndex+1);
-        }
-        return nextQuestionPage;
+        return questionNameMap;
     }
 
-    private String getPreviousQuestionPage(ApplicationScript applicationScript,
-                                       String currentPage){
-        String previousQuestionPage = "";
-        ArrayList<String> questionList = allQuestionPages(applicationScript);
-        int currentPageIndex = -1;
-        for(int i=0; i <= questionList.size()-1; i++){
-            if(questionList.get(i).equals(currentPage)){
-                currentPageIndex = i;
-                break;
-            }
-        }
-        if(currentPageIndex != -1){
-            previousQuestionPage = questionList.get(currentPageIndex-1);
-        }
-        return previousQuestionPage;
-    }
     private void populateQuestionPageData(ApplicationScript applicationScript, QuestionPageData questionPageData) {
         if(questionPageData.getCurrentPageName().length() > 0) {
             String jsonSchema = "";
@@ -238,5 +272,38 @@ public class OnlineApplicationServiceImpl implements OnlineApplicationService{
                     questionAnswerEntry.getValue().getAsString());
         }
         return questionAnswerMap;
+    }
+
+    private ArrayList<String> allSectionNames(ApplicationScript applicationScript) {
+        ArrayList<String> sectionNameList = new ArrayList<>();
+        for (Section section : applicationScript.getSections()) {
+            sectionNameList.add(section.getName());
+        }
+        return sectionNameList;
+    }
+
+    private String getSectionFromQuestionPage(
+            ApplicationScript applicationScript, String currentPageName) {
+        String sectionName = "";
+        if (currentPageName.length() > 0) {
+            outer: for (Section section : applicationScript.getSections()) {
+                LinkedTreeMap<String, QuestionPage> questionPagesMap =
+                        section.getQuestionPages();
+                for (Map.Entry<String, QuestionPage> entry : questionPagesMap.entrySet()) {
+                    if (entry.getKey().equals(currentPageName)) {
+                        sectionName = section.getName();
+                        break outer;
+                    }
+                }
+            }
+        }
+        return sectionName;
+    }
+
+    private String getLinkedHashMapKeyAt(
+            LinkedHashMap<String, Integer> hashMap, int index){
+        Map.Entry<String, Integer> entry =
+                (Map.Entry<String, Integer>) hashMap.entrySet().toArray()[index];
+        return entry.getKey();
     }
 }

@@ -2,10 +2,7 @@ package casespan.ucep.ootb.formbuilder.api;
 
 
 import casespan.ucep.ootb.formbuilder.collection.Application;
-import casespan.ucep.ootb.formbuilder.dto.ApplicationKey;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageAnswers;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageData;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageKey;
+import casespan.ucep.ootb.formbuilder.dto.*;
 import casespan.ucep.ootb.formbuilder.service.OnlineApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +43,12 @@ public class UCEPFormBuilderEngineAPI {
     @ResponseStatus(HttpStatus.OK)
     public QuestionPageData previousActionHandler(@RequestBody QuestionPageKey questionPageKey) {
         return onlineAppService.previousActionHandler(questionPageKey);
+    }
+
+    @PostMapping(value ="/sectionHandler", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionPageData sectionHandler(@RequestBody SectionPageKey sectionPageKey) {
+        return onlineAppService.sectionHandler(sectionPageKey);
     }
 
     @PostMapping(value ="/submitHandler", produces = "application/json")

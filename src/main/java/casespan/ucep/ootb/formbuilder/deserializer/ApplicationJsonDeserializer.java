@@ -55,7 +55,7 @@ public class ApplicationJsonDeserializer implements JsonDeserializer<Application
         final String title = sectionJsonObject.get("title").getAsString();
         section.setTitle(title);
         final String handler = sectionJsonObject.get("handler").getAsString();
-        section.setName(handler);
+        section.setHandler(handler);
         LinkedTreeMap<String, QuestionPage> questionPagesTreeMap =
                 new LinkedTreeMap<>();
         for(Map.Entry<String, JsonElement> questionPagesEntry :sectionElement.getAsJsonObject()

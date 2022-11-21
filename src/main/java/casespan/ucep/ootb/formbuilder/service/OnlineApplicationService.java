@@ -2,10 +2,7 @@ package casespan.ucep.ootb.formbuilder.service;
 
 import casespan.ucep.ootb.formbuilder.collection.Application;
 import casespan.ucep.ootb.formbuilder.collection.QuestionPage;
-import casespan.ucep.ootb.formbuilder.dto.ApplicationKey;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageAnswers;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageData;
-import casespan.ucep.ootb.formbuilder.dto.QuestionPageKey;
+import casespan.ucep.ootb.formbuilder.dto.*;
 
 import java.util.List;
 
@@ -19,4 +16,6 @@ public interface OnlineApplicationService {
     QuestionPageData nextActionHandler(QuestionPageAnswers questionPageAnswers);
 
     void submitApplication(QuestionPageData questionPageData);
+
+    QuestionPageData sectionHandler(SectionPageKey sectionPageKey);
 }
