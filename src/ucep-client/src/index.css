@@ -14,10 +14,28 @@
   -webkit-text-size-adjust: 100%;
 }
 
-h1, h2, h3, h4, h5, h6, th, thead {
+h1, h2, h3, h4, h5, h6, th, li,thead ,span,button{
+  font-family: "Poppins","Roboto Serif", serif;
+}
+.cardHeader{
   font-family: "Poppins","Roboto Serif", serif;
 }
 
 code {
   font-family: "Roboto Mono", Consolas;
+}
+img{
+  height: 600px;
+  opacity: 1;
+}
+.landingImage{
+  display: flexbox;
+   background-image: url(final.png); 
+  height: 600px;
+  display: flex;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+  
+  
 }
