@@ -9,7 +9,6 @@ import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 import Layout from "../../components/layout/Layout";
@@ -86,11 +85,7 @@ const UcefFormLoader = () => {
   const [jsonSchema, setJsonSchema] = useState({} /*globalJsonSchema*/);
   const [uiSchema, setUiSchema] = useState({} /*globalUiSchema*/);
   const [formData, setFormData] = useState();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const [prevButton, setPrevButton] = useState<boolean>(false);
 
   useEffect(() => {
     axios
@@ -99,6 +94,7 @@ const UcefFormLoader = () => {
         scriptExecutionId: scriptExecutionId,
       })
       .then((schema) => {
+        console.log(schema.data.uiSchema);
         setJsonSchema(JSON.parse(schema.data.jsonSchema));
         setUiSchema(JSON.parse(schema.data.uiSchema));
         setApplicationName(schema.data.applicationName);
@@ -109,78 +105,51 @@ const UcefFormLoader = () => {
 
   /** Handle submission of form data. */
   const handleSubmit = ({ formData: any }: any, event: any) => {
-    event.target.back.addEventListener("click", () => {
-      console.log("back was executed.");
-      console.log(JSON.stringify(formData));
-      axios
-        .post("http://localhost:9088/forms/previousActionHandler", {
-          formAnswers: JSON.stringify(formData),
-          applicationName: applicationName,
-          currentPageName: currentPageName,
-          scriptExecutionId: scriptExecutionId,
-        })
-        .then((schema) => {
-          setJsonSchema(JSON.parse(schema.data.jsonSchema));
-          setUiSchema(JSON.parse(schema.data.uiSchema));
-          setApplicationName(schema.data.applicationName);
-          setCurrentPageName(schema.data.currentPageName);
-          setScriptExecutionId(schema.data.scriptExecutionId);
-          setFormData(schema.data.formAnswers);
-        })
-        .catch((err) => {
-          console.log("Form was not submitted.");
-          console.log(err);
-        });
-    });
-    event.target.next.addEventListener("click", () => {
-      console.log("next was executed.");
-      axios
-        .post("http://localhost:9088/forms/nextActionHandler", {
-          formAnswers: JSON.stringify(formData),
-          applicationName: applicationName,
-          currentPageName: currentPageName,
-          scriptExecutionId: scriptExecutionId,
-        })
-        .then((schema: AxiosResponse<any>) => {
-          setJsonSchema(JSON.parse(schema.data.jsonSchema));
-          setUiSchema(JSON.parse(schema.data.uiSchema));
-          setApplicationName(schema.data.applicationName);
-          setCurrentPageName(schema.data.currentPageName);
-          setScriptExecutionId(schema.data.scriptExecutionId);
-          setFormData(schema.data.formAnswers);
-          // Redirection logic (final submission)
-          //
-          if (schema.data.isSubmitPage === true) {
-            navigate("/success");
-          }
-          //
-        })
-        .catch((err) => {
-          console.log("Next button is clicked!");
-          console.log(err);
-        });
-    });
-  };
-
-  /** Handle submission of form data. */
-  const handlePrevious = ({ formData: any }: any, event: any) => {
     axios
-      .post("http://localhost:9088/forms/previousActionHandler", {
+      .post("http://localhost:9088/forms/nextActionHandler", {
         formAnswers: JSON.stringify(formData),
         applicationName: applicationName,
         currentPageName: currentPageName,
         scriptExecutionId: scriptExecutionId,
       })
       .then((schema: AxiosResponse<any>) => {
-        setJsonSchema(JSON.parse(schema.data.jsonSchema));
-        setUiSchema(JSON.parse(schema.data.uiSchema));
+        console.log(schema.data);
         setApplicationName(schema.data.applicationName);
         setCurrentPageName(schema.data.currentPageName);
+        setPrevButton(schema.data.previousButtonEnabled);
+        setJsonSchema(JSON.parse(schema.data.jsonSchema));
+        setUiSchema(JSON.parse(schema.data.uiSchema));
+        setScriptExecutionId(schema.data.scriptExecutionId);
+        setFormData(schema.data.formAnswers);
+        // Redirection logic (final submission)
+        //
+        if (schema.data.isSubmitPage === true) {
+          navigate("/success");
+        }
+        //
+      });
+  };
+
+  /** Handle the previous button. */
+  const handlePrevious = () => {
+    console.log(applicationName, currentPageName, scriptExecutionId);
+    axios
+      .post("http://localhost:9088/forms/previousActionHandler", {
+        applicationName: applicationName,
+        currentPageName: currentPageName,
+        scriptExecutionId: scriptExecutionId,
+      })
+      .then((schema) => {
+        console.log(schema.data);
+        setApplicationName(schema.data.applicationName);
+        setCurrentPageName(schema.data.currentPageName);
+        setPrevButton(schema.data.previousButtonEnabled);
+        setJsonSchema(JSON.parse(schema.data.jsonSchema));
+        setUiSchema(JSON.parse(schema.data.uiSchema));
         setScriptExecutionId(schema.data.scriptExecutionId);
         setFormData(schema.data.formAnswers);
       })
       .catch((err) => {
-        console.log("Back button is clicked!");
         console.log(err);
       });
   };
@@ -203,7 +172,11 @@ const UcefFormLoader = () => {
         <Form
           className="bg-white rounded-3xl p-10 neu-form"
           schema={jsonSchema as any}
-          uiSchema={uiSchema}
+          uiSchema={{
+            "ui:submitButtonOptions": {
+              norender: true,
+            },
+          }}
           validator={validator}
           onChange={(e) => setFormData(e.formData)}
           formData={formData}
@@ -216,8 +189,36 @@ const UcefFormLoader = () => {
           }}
           widgets={{ SelectWidget: SelectWidget }}
           onSubmit={handleSubmit}
-          //onPrevious={handlePrevious}
-        />
+        >
+          <div className="flex flex-row py-2">
+            {prevButton ? (
+              <button
+                name="back"
+                type="button"
+                onClick={() => handlePrevious()}
+                className={`px-6 py-2.5 bg-gradient-to-b from-appColor-600  to-gradientColor-600 text-white
+                    font-medium text-xs leading-tight uppercase rounded-3xl
+                    shadow-md hover:bg-blue-900 hover:shadow-lg focus:bg-blue-700
+                    focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
+                    active:shadow-lg transition duration-150 ease-in-out`}
+              >
+                Back
+              </button>
+            ) : (
+              <></>
+            )}
+            <button
+              type="submit"
+              className={`ml-auto px-6 py-2.5 bg-gradient-to-b from-appColor-600  to-gradientColor-600 text-white
+                    font-medium text-xs leading-tight uppercase rounded-3xl
+                    shadow-md hover:bg-blue-900 hover:shadow-lg focus:bg-blue-700
+                    focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800
+                    active:shadow-lg transition duration-150 ease-in-out`}
+            >
+              Next
+            </button>
+          </div>
+        </Form>
       </div>
     </Layout>
   );
